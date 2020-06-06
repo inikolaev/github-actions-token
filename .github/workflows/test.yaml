@@ -1,4 +1,4 @@
-name: Test & Build Pipeline
+name: Workflow without Delay
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
   token:
     runs-on: ubuntu-latest
     steps:
-    - name: Print Token
+    - name: Print Command
       env:
         TOKEN: ${{secrets.GITHUB_TOKEN}}
         JENKINS_CREDENTIALS: ${{secrets.JENKINS_CREDENTIALS}}
@@ -22,9 +22,9 @@ jobs:
           --header 'content-type: application/json' \
           --data '{
             "ref": "${{github.sha}}",
-            "environment": "test",
+            "environment": "test-workflow",
             "required_contexts": []
           }' | jq -r ".url")
 
         echo "Token: ${TOKEN:0:4} ${TOKEN:4}"
-        echo "Command: ./update_status.sh \"in_progress\" \"${TOKEN:0:4}\" \"${TOKEN:4}\" \"$DEPLOYMENT_URL\""
+        echo "Command: ./update_status.sh \"in_progress\" \"${TOKEN:0:4}\" \"${TOKEN:4}\" \"$DEPLOYMENT_URL/statuses\""
